@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -26,11 +27,14 @@ namespace WifiNotificator
     /// <remarks>http://stackoverflow.com/questions/2567107/ping-or-otherwise-tell-if-a-device-is-on-the-network-by-mac-in-c-sharp</remarks>
     public class NetworkMACWatcher
     {
+        public event EventHandler<Dictionary<string, string>> FirstAddressesLoaded;
         public event EventHandler<KeyValuePair<string, string>> MacConnected;
         public event EventHandler<KeyValuePair<string, string>> MacDisconnected;
 
         private delegate void WatchNetworkDelegate();
         private WatchNetworkDelegate watchNetworkDelegate;
+
+        ConcurrentDictionary<string, string> macCache = null;
 
         public NetworkMACWatcher()
         {
@@ -42,20 +46,29 @@ namespace WifiNotificator
             watchNetworkDelegate.BeginInvoke(null, null);
         }
 
+        //public List<string> GetLanIPs()
+        //{
+        //    if (macCache == null) return null;
+        //    return macCache.Values.Distinct().ToList();
+        //}
+
         /// <summary>
         /// Infinatelly loops to fire off MAC notification events. On same thread.
         /// </summary>
         public void WatchNetwork()
         {
-            Dictionary<string,string> macCache = null;
             while (true)
             {
                 var macs = new NetworkMACWatcher().GetMacsInLan();
 
                 if (macCache == null)
                 {
-                    macCache = new Dictionary<string, string>(macs);
-                    ConsoleDebug(macs);
+                    macCache = new ConcurrentDictionary<string, string>(macs);
+                    if (this.FirstAddressesLoaded != null)
+                    {
+                        ConsoleDebug(macs);
+                        FirstAddressesLoaded(this, new Dictionary<string,string>(macCache));
+                    }
                 }
 
                 var newlyconnected = macs.Except(macCache);
@@ -69,7 +82,7 @@ namespace WifiNotificator
                     if (this.MacConnected != null)
                         this.MacConnected(this, mac);
 
-                macCache = new Dictionary<string, string>(macs);
+                macCache = new ConcurrentDictionary<string, string>(macs);
 
                 System.Threading.Thread.Sleep(1000);
             }

@@ -18,19 +18,21 @@ namespace TrayNotifier
         bool mAllowClose;       // ContextMenu's Exit command used
         bool mLoadFired;        // Form was shown once
 
-        NetworkMACWatcher networkWatcher;
-        GrowlNotifier growl;
 
         public LanNotifier()
         {
             InitializeComponent();
 
-            networkWatcher = new NetworkMACWatcher();
+            var networkWatcher = ServiceLocator.NetworkWatcher;
+            networkWatcher.FirstAddressesLoaded += networkWatcher_FirstAddressesLoaded;
             networkWatcher.MacConnected += new EventHandler<KeyValuePair<string, string>>(networkWatcher_MacConnected);
             networkWatcher.MacDisconnected += new EventHandler<KeyValuePair<string, string>>(networkWatcher_MacDisconnected);
             networkWatcher.WatchNetworkAsync();
+        }
 
-            growl = new GrowlNotifier();
+        void networkWatcher_FirstAddressesLoaded(object sender, Dictionary<string, string> e)
+        {
+            //ServiceLocator.HueBridge.LocateBridge(e.Values.ToList());
         }
 
         void networkWatcher_MacConnected(object sender, KeyValuePair<string, string> mac)
@@ -38,14 +40,14 @@ namespace TrayNotifier
             //var name = IPUtil.TryResolveName(mac.Value);
             var title = "Device Connected";
             this.systemTrayIcon.ShowBalloonTip(2000, title, mac.Value, ToolTipIcon.Info);
-            growl.SendNotification(title, mac.Value);
+            ServiceLocator.Growl.SendNotification(title, mac.Value);
             Trace.WriteLine(DateTime.Now.ToShortTimeString() + " mac newly connected: " + mac);
         }
 
         void networkWatcher_MacDisconnected(object sender, KeyValuePair<string, string> mac)
         {
             this.systemTrayIcon.ShowBalloonTip(2000, "Device Disconnected", mac.Value, ToolTipIcon.Info);
-            growl.SendNotification("Device Disconnected", mac.Value);
+            ServiceLocator.Growl.SendNotification("Device Disconnected", mac.Value);
             Trace.WriteLine(DateTime.Now.ToShortTimeString() + " mac disconnected: " + mac);
         }
 
