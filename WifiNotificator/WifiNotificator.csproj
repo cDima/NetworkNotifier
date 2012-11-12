@@ -9,7 +9,8 @@
     <RootNamespace>WifiNotificator</RootNamespace>
     <AssemblyName>WifiNotificator</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -44,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPInfo.cs" />
     <Compile Include="NetworkMACWatcher.cs" />
     <Compile Include="IPUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -31,5 +31,17 @@ namespace WifiNotificator
                 256 * (long)bytes[2] +
                 (long)bytes[3]);
         }
+
+        public static string TryResolveName(string hostnameOrAddress)
+        {
+            try
+            {
+                var hostname = Dns.GetHostEntry(hostnameOrAddress);
+                return hostname.HostName ?? hostnameOrAddress;
+            }catch (System.Net.Sockets.SocketException ex)
+            {
+                return hostnameOrAddress;
+            }
+        }
     }
 }

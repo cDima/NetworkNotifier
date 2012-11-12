@@ -26,22 +26,35 @@ namespace WifiNotificator
     /// <remarks>http://stackoverflow.com/questions/2567107/ping-or-otherwise-tell-if-a-device-is-on-the-network-by-mac-in-c-sharp</remarks>
     public class NetworkMACWatcher
     {
-        public event EventHandler<string> MacConnected;
-        public event EventHandler<string> MacDisconnected;
+        public event EventHandler<KeyValuePair<string, string>> MacConnected;
+        public event EventHandler<KeyValuePair<string, string>> MacDisconnected;
+
+        private delegate void WatchNetworkDelegate();
+        private WatchNetworkDelegate watchNetworkDelegate;
+
+        public NetworkMACWatcher()
+        {
+            watchNetworkDelegate = new WatchNetworkDelegate(this.WatchNetwork);
+        }
+
+        public void WatchNetworkAsync()
+        {
+            watchNetworkDelegate.BeginInvoke(null, null);
+        }
 
         /// <summary>
         /// Infinatelly loops to fire off MAC notification events. On same thread.
         /// </summary>
         public void WatchNetwork()
         {
-            IEnumerable<string> macCache = null;
+            Dictionary<string,string> macCache = null;
             while (true)
             {
                 var macs = new NetworkMACWatcher().GetMacsInLan();
 
                 if (macCache == null)
                 {
-                    macCache = new HashSet<string>(macs);
+                    macCache = new Dictionary<string, string>(macs);
                     ConsoleDebug(macs);
                 }
 
@@ -55,23 +68,23 @@ namespace WifiNotificator
                 foreach (var mac in newlyconnected)
                     if (this.MacConnected != null)
                         this.MacConnected(this, mac);
-                
-                macCache = new HashSet<string>(macs);
+
+                macCache = new Dictionary<string, string>(macs);
 
                 System.Threading.Thread.Sleep(1000);
             }
         }
 
         [Conditional("DEBUG")]
-        private void ConsoleDebug(IEnumerable<string> macs)
+        private void ConsoleDebug(Dictionary<string, string> macs)
         {
             foreach (var mac in macs) 
                 Console.WriteLine("found Mac: " + mac);
         }
 
-        public IEnumerable<string> GetMacsInLan()
+        public Dictionary<string,string> GetMacsInLan()
         {
-            var foundMacs = new List<string>();
+            var foundMacs = new Dictionary<string,string>();
             // refresh by pinging all subnets
             var baseIP = IPUtil.ConvertToBaseIP(IPUtil.GetMyIpAddress());
 
@@ -104,15 +117,17 @@ namespace WifiNotificator
 
                         string[] parts = s.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
-                        var hostnameOrAddress = parts[0].Trim();
+                        var hostnameOrAddress = parts[0].Trim(); // may be IP address, must resolve.
+                        
                         var foundMac = parts[1].Trim().ToLower();
-                        foundMacs.Add(foundMac);
+                        if (!foundMacs.ContainsKey(foundMac))
+                            foundMacs.Add(foundMac, hostnameOrAddress);
                         s = sr.ReadLine();
                     }
                 }
             }
 
-            return foundMacs.Distinct();
+            return foundMacs;
         }
 
         private static void ClearARPCache()
