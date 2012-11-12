@@ -1,5 +1,5 @@
-#Network Watcher 
-## Notify of newly connected MACs and disconnected devices in the same LAN subnetwork
+#Network Watcher
+## Notifier of newly connected and disconnected devices 
 
 Notifies of new MACs connecting and disconnecting onto the same LAN network as machine's subnet domain.
 
@@ -12,4 +12,9 @@ Eample code:
         networkWatcher.MacConnected += new EventHandler<string>(networkWatcher_MacConnected);
         networkWatcher.MacDisconnected += new EventHandler<string>(networkWatcher_MacDisconnected);
         networkWatcher.WatchNetwork();
-    
+
+## Tray notifications 
+
+The TrayNotifier app sits in the tray and alerts of newly connected devices. Integrated with [Growl for windows](http://www.growlforwindows.com).
+
+![Tray notification](https://raw.github.com/cDima/NetworkWatcher/master/Readme/systray-demo.png)
