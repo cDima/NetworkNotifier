@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hue;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,24 +31,45 @@ namespace TrayNotifier
             networkWatcher.WatchNetworkAsync();
         }
 
-        void networkWatcher_FirstAddressesLoaded(object sender, Dictionary<string, string> e)
+        async void networkWatcher_FirstAddressesLoaded(object sender, Dictionary<string, string> e)
         {
-            //ServiceLocator.HueBridge.LocateBridge(e.Values.ToList());
+            ServiceLocator.HueBridge = await HueBridgeLocator.LocateBridge(e.Values.ToList());
+            if (ServiceLocator.HueBridge != null)
+            {
+                ServiceLocator.HueBridge.PushButtonOnBridge += HueBridge_PushButtonOnBridge;
+                ServiceLocator.HueBridge.InitializeRouter();
+            }
+        }
+
+        void HueBridge_PushButtonOnBridge(object sender, EventArgs e)
+        {
+            systemTrayIcon.ShowBalloonTip(60 * 1000, "Philips Hue Bridge Found", "Please press the button on the bridge in the next minute.", ToolTipIcon.Info);
         }
 
         void networkWatcher_MacConnected(object sender, KeyValuePair<string, string> mac)
         {
             //var name = IPUtil.TryResolveName(mac.Value);
             var title = "Device Connected";
+
             this.systemTrayIcon.ShowBalloonTip(2000, title, mac.Value, ToolTipIcon.Info);
+            
             ServiceLocator.Growl.SendNotification(title, mac.Value);
+            
+            if (ServiceLocator.HueBridge != null) 
+                ServiceLocator.HueBridge.FlashLights();
+            
             Trace.WriteLine(DateTime.Now.ToShortTimeString() + " mac newly connected: " + mac);
         }
 
         void networkWatcher_MacDisconnected(object sender, KeyValuePair<string, string> mac)
         {
             this.systemTrayIcon.ShowBalloonTip(2000, "Device Disconnected", mac.Value, ToolTipIcon.Info);
+            
             ServiceLocator.Growl.SendNotification("Device Disconnected", mac.Value);
+            
+            if (ServiceLocator.HueBridge != null)
+                ServiceLocator.HueBridge.FlashLights();
+
             Trace.WriteLine(DateTime.Now.ToShortTimeString() + " mac disconnected: " + mac);
         }
 
@@ -81,6 +103,18 @@ namespace TrayNotifier
                 Close(); 
             else 
                 Application.Exit();
+        }
+
+        private void flashHueLightsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ServiceLocator.HueBridge != null)
+                ServiceLocator.HueBridge.FlashLights();
+        }
+
+        private void turnOffLightsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (ServiceLocator.HueBridge != null)
+                ServiceLocator.HueBridge.TurnOffLights();
         }
     }
 }
