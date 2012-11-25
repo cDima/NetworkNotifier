@@ -6,11 +6,11 @@ using Hue.Properties;
 
 namespace Hue
 {
-    public class PhilipsHueUrlProvider
+    public class UrlProvider
     {
         private string ip;
 
-        public PhilipsHueUrlProvider(string ip)
+        public UrlProvider(string ip)
         {
             this.ip = ip;
 

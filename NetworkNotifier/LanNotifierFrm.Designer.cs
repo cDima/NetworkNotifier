@@ -1,4 +1,4 @@
-﻿namespace TrayNotifier
+﻿namespace NetworkNotifier
 {
     partial class LanNotifier
     {
@@ -33,9 +33,9 @@
             this.systemTrayIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.flashHueLightsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.turnOffLightsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.turnOffLightsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -55,44 +55,44 @@
             this.showToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(162, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(184, 114);
             // 
             // flashHueLightsToolStripMenuItem
             // 
             this.flashHueLightsToolStripMenuItem.Name = "flashHueLightsToolStripMenuItem";
-            this.flashHueLightsToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.flashHueLightsToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.flashHueLightsToolStripMenuItem.Text = "Flash Hue Lights";
             this.flashHueLightsToolStripMenuItem.Click += new System.EventHandler(this.flashHueLightsToolStripMenuItem_Click);
+            // 
+            // turnOffLightsToolStripMenuItem
+            // 
+            this.turnOffLightsToolStripMenuItem.Name = "turnOffLightsToolStripMenuItem";
+            this.turnOffLightsToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.turnOffLightsToolStripMenuItem.Text = "Turn Off Lights";
+            this.turnOffLightsToolStripMenuItem.Click += new System.EventHandler(this.turnOffLightsToolStripMenuItem_Click);
             // 
             // showToolStripMenuItem
             // 
             this.showToolStripMenuItem.Name = "showToolStripMenuItem";
-            this.showToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
             this.showToolStripMenuItem.Text = "About";
             this.showToolStripMenuItem.Click += new System.EventHandler(this.showToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.exitToolStripMenuItem.Text = "Exit Lan Notifier";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.exitToolStripMenuItem.Text = "Exit Network Notifier";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // turnOffLightsToolStripMenuItem
-            // 
-            this.turnOffLightsToolStripMenuItem.Name = "turnOffLightsToolStripMenuItem";
-            this.turnOffLightsToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.turnOffLightsToolStripMenuItem.Text = "Turn Off Lights";
-            this.turnOffLightsToolStripMenuItem.Click += new System.EventHandler(this.turnOffLightsToolStripMenuItem_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(105, 13);
+            this.label1.Size = new System.Drawing.Size(88, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Philips Hue C# client";
+            this.label1.Text = "NetworkWatcher";
             // 
             // LanNotifier
             // 

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.Linq;
 using System.Threading;
 using Hue.Contracts;
 using Hue.JSON;
@@ -7,7 +6,6 @@ using Hue.Properties;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 
@@ -15,9 +13,8 @@ namespace Hue
 {
     public class HueBridge
     {
-        public PhilipsHueUrlProvider Urls;
+        public UrlProvider Urls;
         public ConcurrentDictionary<string, HueLight> Lights { get; set; }
-
 
         public event EventHandler PushButtonOnBridge;  
 
@@ -28,8 +25,8 @@ namespace Hue
         
         public HueBridge(string ip)
         {
-            Urls = new PhilipsHueUrlProvider(ip);
-
+            Urls = new UrlProvider(ip);
+            this.ip = ip;
             // not needed - clock for every 1 sec update status. 
             //timer = new Timer(StatusCheckEvent, null, 0, 1000);
         }
@@ -126,9 +123,9 @@ namespace Hue
             return false;
         }
 
-        private async Task<string> SetLightStatus(string lightKey, string json)
+        private async void SetLightStatus(string lightKey, string json)
         {
-            return await HttpRestHelper.Put(Urls.GetLampUrl(lightKey), json);
+            await HttpRestHelper.Put(Urls.GetLampUrl(lightKey), json);
         }
 
         public void AlertAllLights()
@@ -140,23 +137,18 @@ namespace Hue
             }
         }
 
-        public async void FlashLights()
+        public void FlashLights()
         {
             if (Lights != null && IsAuthenticated)
             {
-                var oldLightStatuses = new Dictionary<string, HueLight>(Lights); // clone
-                // push PUT request to /api/key/lights/1/state
-
                 foreach (var light in Lights)
                 {
                     SetLightStatus(light.Key, "{\"bri\": 254, \"on\": true }");
-                    //light.Value.state.JsonDiff(new HueLightState { bri = 254, on = true })); // some brightness
                 }
                 Thread.Sleep(1000);
                 foreach (var light in Lights)
                 {
                     SetLightStatus(light.Key, "{\"bri\": 0, \"on\": true }");
-                    //light.Value.state.AsJsonCommand()); // set back brightness
                 }
             }
         }

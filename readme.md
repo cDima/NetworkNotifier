@@ -17,4 +17,4 @@ Eample code:
 
 The TrayNotifier app sits in the tray and alerts of newly connected devices. Integrated with [Growl for windows](http://www.growlforwindows.com).
 
-![Tray notification](https://raw.github.com/cDima/NetworkWatcher/master/Readme/systray-demo.png)
+![Tray notification](https://raw.github.com/cDima/NetworkWatcher/master/systray-demo.png)

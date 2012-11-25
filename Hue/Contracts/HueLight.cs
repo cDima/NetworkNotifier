@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Script.Serialization;
-using Hue.JSON;
-
-namespace Hue.Contracts
+﻿namespace Hue.Contracts
 {
     public class HueLight
     {

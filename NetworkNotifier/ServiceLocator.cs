@@ -1,6 +1,6 @@
 ﻿using Hue;
 using WifiNotificator;
-namespace TrayNotifier
+namespace NetworkNotifier
 {
     public static class ServiceLocator
     {

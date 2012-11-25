@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WifiNotificator;
 
-namespace TrayNotifier
+namespace NetworkNotifier
 {
     public partial class LanNotifier : Form
     {

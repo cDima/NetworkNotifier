@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace TrayNotifier.Properties
+namespace NetworkNotifier.Properties
 {
 
 
