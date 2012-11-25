@@ -7,4 +7,4 @@ Notifies of new MACs connecting and disconnecting onto the same LAN network as m
 
 The TrayNotifier app sits in the tray and alerts of newly connected devices. Integrated with [Growl for windows](http://www.growlforwindows.com).
 
-![Tray notification](https://raw.github.com/cDima/NetworkWatcher/master/systray-demo.png)
+![Tray notification](https://raw.github.com/cDima/NetworkNotifier/master/systray-demo.png)
