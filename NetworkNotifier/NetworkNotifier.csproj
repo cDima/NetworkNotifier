@@ -38,6 +38,9 @@
     <Reference Include="Growl.CoreLibrary">
       <HintPath>..\libs\Growl.CoreLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="LanNotifier">
+      <HintPath>..\libs\LanNotifier.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -92,10 +95,6 @@
     <ProjectReference Include="..\Hue\Hue.csproj">
       <Project>{5f9881e0-b7f7-4d41-bd78-1f5388e65b5e}</Project>
       <Name>Hue</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WifiNotificator\WifiNotificator.csproj">
-      <Project>{4cdaab1d-4694-4a3f-b302-6da1aaa70f7c}</Project>
-      <Name>WifiNotificator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,10 +1,11 @@
 ﻿using Hue;
-using WifiNotificator;
+using LanNotifier;
+
 namespace NetworkNotifier
 {
     public static class ServiceLocator
     {
-        public static NetworkMACWatcher NetworkWatcher = new NetworkMACWatcher();
+        public static MacWatcher NetworkWatcher = new MacWatcher();
         public static GrowlNotifier Growl = new GrowlNotifier();
         public static HueBridge HueBridge = null;
     }
